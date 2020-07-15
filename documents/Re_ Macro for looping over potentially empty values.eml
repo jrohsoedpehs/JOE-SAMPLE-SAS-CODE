@@ -1,0 +1,228 @@
+MIME-Version: 1.0
+Date: Thu, 9 May 2019 12:09:34 -0400
+From: "Quinn, Ryan J." <ryanq@nursing.upenn.edu>
+Subject: Re: Macro for looping over potentially empty values
+Thread-Topic: Re: Macro for looping over potentially empty values
+To: "Rhodes, Joseph M" <josephrh@nursing.upenn.edu>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="utf-8"
+
+<html>
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+<style type=3D"text/css" style=3D"display:none;"> P {margin-top:0;margin-bo=
+ttom:0;} </style>
+</head>
+<body dir=3D"ltr">
+<div style=3D"font-family: Calibri, Arial, Helvetica, sans-serif; font-size=
+: 12pt; color: rgb(0, 0, 0);">
+<span>/*********conditionally include estimate statements depending on cont=
+inuous variables**********/<br>
+</span>
+<div>/*create macro variables i and xvar*/<br>
+</div>
+<div>%local i xvar;<br>
+</div>
+<div><br>
+</div>
+<div>/*do loop for i. &nbsp;to count of # of x variables specified in macro=
+ call (&amp;x)*/<br>
+</div>
+<div>&nbsp;%do i=3D1 %to %sysfunc(countw(%quote(&amp;x), %str( ) ));<br>
+</div>
+<div>/*&amp;xvar will be each variabel specifid in &amp;x*/<br>
+</div>
+<div>&nbsp;%let xvar=3D%sysfunc(scan(&amp;x, &amp;i)); <br>
+</div>
+<div>%if %sysfunc(countw(%quote(&amp;xvar), %str( ) ))&gt;0 %then %do;<br>
+</div>
+<div><br>
+</div>
+<div>/*type operations that you would perform on nonmissing values here**/<=
+br>
+</div>
+<div><br>
+</div>
+<div>%end;<br>
+</div>
+<div>%end;<br>
+</div>
+<span></span><br>
+</div>
+<div id=3D"appendonsend"></div>
+<hr style=3D"display:inline-block;width:98%" tabindex=3D"-1">
+<div id=3D"divRplyFwdMsg" dir=3D"ltr"><font face=3D"Calibri, sans-serif" st=
+yle=3D"font-size:11pt" color=3D"#000000"><b>From:</b> Quinn, Ryan J.<br>
+<b>Sent:</b> Thursday, May 9, 2019 12:04 PM<br>
+<b>To:</b> Rhodes, Joseph M<br>
+<b>Subject:</b> Macro for looping over potentially empty values</font>
+<div>&nbsp;</div>
+</div>
+<style type=3D"text/css" style=3D"display:none">
+<!--
+p
+	{margin-top:0;
+	margin-bottom:0}
+-->
+</style>
+<div dir=3D"ltr">
+<div style=3D"font-family:Calibri,Arial,Helvetica,sans-serif; font-size:12p=
+t; color:rgb(0,0,0)">
+<span><br>
+</span>
+<div>%macro mixC1c(data,y,x,z,titl,wher);<br>
+</div>
+<div><br>
+</div>
+<div>&nbsp;<br>
+</div>
+<div><br>
+</div>
+<div><br>
+</div>
+<div>ods select Tests3 ;<br>
+</div>
+<div>data lsmeans; data diffs; run;<br>
+</div>
+<div>proc mixed data=3D&amp;data noclprint ORDER=3DFORMATTED; *ORDER=3DINTE=
+RNAL; <br>
+</div>
+<div>&amp;wher;<br>
+</div>
+<div>&nbsp; &nbsp; class &nbsp; visit &nbsp;record_id &amp;z;<br>
+</div>
+<div>&nbsp; &nbsp; model &nbsp;&amp;y =3D visit &amp;x &amp;z /OUTPRED=3Dpr=
+ed RESIDUAL solution;<br>
+</div>
+<div>&nbsp; &nbsp; lsmeans visit &amp;z /pdiff cl;<br>
+</div>
+<div><br>
+</div>
+<div><br>
+</div>
+<div>/*********conditionally include estimate statements depending on conti=
+nuous variables**********/<br>
+</div>
+<div>/*create macro variables i and xvar*/<br>
+</div>
+<div>%local i xvar;<br>
+</div>
+<div>%if %sysfunc(countw(%quote(&amp;x), %str( ) ))&gt;0 %then %do;<br>
+</div>
+<div>/*do loop for i. &nbsp;to count of # of x variables specified in macro=
+ call (&amp;x)*/<br>
+</div>
+<div>&nbsp;%do i=3D1 %to %sysfunc(countw(%quote(&amp;x), %str( ) ));<br>
+</div>
+<div>/*&amp;xvar will be each variabel specifid in &amp;x*/<br>
+</div>
+<div>&nbsp;%let xvar=3D%sysfunc(scan(&amp;x, &amp;i)); &nbsp;<br>
+</div>
+<div>estimate &quot;&amp;xvar&quot; &amp;xvar 1; %end;%end;<br>
+</div>
+<div><br>
+</div>
+<div>&nbsp; &nbsp; repeated visit/subject =3Drecord_id type=3Dun;<br>
+</div>
+<div><br>
+</div>
+<div>%if %sysfunc(countw(%quote(&amp;x), %str( ) ))&gt;0 %then %do;<br>
+</div>
+<div>ods output lsmeans=3Dlsmeans diffs=3Ddiffs estimates=3Destimates;<br>
+</div>
+<div>%end;<br>
+</div>
+<div>%else %do; <br>
+</div>
+<div>ods output lsmeans=3Dlsmeans diffs=3Ddiffs;<br>
+</div>
+<div>%end;<br>
+</div>
+<div>&nbsp;<br>
+</div>
+<div>&nbsp; &nbsp; title2 &quot;&amp;y &nbsp;&amp;titl&quot;;<br>
+</div>
+<div>format visit visitnum.;<br>
+</div>
+<div>quit; &nbsp;<br>
+</div>
+<div>&nbsp;<br>
+</div>
+<div>/*Residual analysis;*/<br>
+</div>
+<div>/*proc univariate data=3Dpred normal plot;*/<br>
+</div>
+<div>/* var StudentResid;*/<br>
+</div>
+<div>/*run;*/<br>
+</div>
+<div><br>
+</div>
+<div>PROC SORT DATA =3D LSMEANS; BY visit; QUIT;<br>
+</div>
+<div>proc print data=3Dlsmeans(drop =3D DF &nbsp; tValue &nbsp;Alpha ) labe=
+l ; *NOOBS;<br>
+</div>
+<div>* var visit &nbsp;Estimate StdErr &nbsp;Lower &nbsp;Upper Probt;<br>
+</div>
+<div>&nbsp; &nbsp; label Probt =3D 'P-value';<br>
+</div>
+<div>&nbsp; &nbsp; title3 'Model Based Means'; <br>
+</div>
+<div>format estimate stderr &nbsp;lower upper 8.4 ;<br>
+</div>
+<div>format visit;<br>
+</div>
+<div>quit; &nbsp;<br>
+</div>
+<div><br>
+</div>
+<div>PROC SORT DATA=3DDIFFS; BY _visit visit &nbsp;; QUIT;<br>
+</div>
+<div>proc print data=3Ddiffs (drop =3D DF &nbsp; tValue &nbsp;Alpha); * NOO=
+BS label; <br>
+</div>
+<div>&nbsp; &nbsp; label Probt =3D 'P-value';<br>
+</div>
+<div>&nbsp; &nbsp; title3 'Pairwise Comparisons'; <br>
+</div>
+<div>*var &nbsp; &nbsp; _visit visit &nbsp;Estimate StdErr Probt &nbsp;Lowe=
+r &nbsp;Upper;<br>
+</div>
+<div>format estimate stderr &nbsp;lower upper 8.4;<br>
+</div>
+<div>format visit _visit;<br>
+</div>
+<div><br>
+</div>
+<div>%if %sysfunc(countw(%quote(&amp;x), %str( ) ))&gt;0 %then %do;<br>
+</div>
+<div>proc print data=3Destimates;run;<br>
+</div>
+<div>%end;<br>
+</div>
+<div>quit; <br>
+</div>
+<div>%MEND; &nbsp;<br>
+</div>
+<div>/*PREOPERATIVE*/<br>
+</div>
+<div>title&quot;Final Models: Preoperative&quot;;<br>
+</div>
+<div>%mixc1c(data=3Dderived.changes_v_123,y=3Dchange_total_comfort,x=3D,z=
+=3D,titl=3D,wher=3D);<br>
+</div>
+<div>%mixc1c(data=3Dderived.changes_v_123,y=3Dchange_vas_comfort ,x=3D,z=3D=
+,titl=3D,wher=3D);<br>
+</div>
+<div>%mixc1c(data=3Dderived.changes_v_123,y=3Dchange_alert_comfort ,x=3D,z=
+=3D,titl=3D,wher=3D);<br>
+</div>
+<div>%mixc1c(data=3Dderived.changes_v_123,y=3Dchange_infanthr_prehold &nbsp=
+;,x=3D,z=3Dinfantgender_mpre_pre1,titl=3D,wher=3D);<br>
+</div>
+<span></span><br>
+</div>
+</div>
+</body>
+</html>

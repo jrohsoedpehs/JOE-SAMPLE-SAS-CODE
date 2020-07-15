@@ -1,0 +1,313 @@
+MIME-Version: 1.0
+Date: Wed, 15 May 2019 10:54:58 -0400
+From: SAS Technical Support <support@sas.com>
+Subject: [SAS 7612779768] Handle Null variables in Proc SQL
+Thread-Topic: [SAS 7612779768] Handle Null variables in Proc SQL
+To: "Rhodes, Joseph M" <josephrh@nursing.upenn.edu>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset="utf-8"
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.=
+w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns=3D"http://www.w3.org/1999/xhtml" dir=3D"auto">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-8">
+<meta name=3D"format-detection" content=3D"telephone=3Dno">
+<meta name=3D"viewport" content=3D"width=3Ddevice-width">
+<title>7612779768 - Handle Null variables in Proc SQL</title>
+</head>
+<body style=3D"-webkit-text-size-adjust: 100%;-ms-text-size-adjust: 100%;fo=
+nt-family: Arial, Helvetica, sans-serif;font-size: 14px;font-weight: normal=
+;text-align: center;">
+<style type=3D"text/css">
+        @media only screen and (max-width:480px) {
+            table[class=3Dcontenttable] {
+                width: 320px !important;
+                font-size: 16px !important;
+            }
+
+            table[class=3Dfloattable] {
+                width: 320px !important;
+            }
+
+            td[class=3Dlogohead] {
+                display: table-header-group !important;
+                width: 90% !important;
+            }
+
+            td[class=3Dreminder] {
+                display: table-footer-group !important;
+                width: 90% !important;
+            }
+
+            td[class=3Dfootercontent] {
+                font-size: 14px !important;
+            }
+
+            .emailButton {
+                max-width: 400px !important;
+                width: 100% !important;
+            }
+
+                .emailButton a {
+                    display: block !important;
+                    font-size: 18px !important;
+                }
+        }
+
+        .ExternalClass {
+            width: 100%;
+        }
+
+            .ExternalClass,
+            .ExternalClass p,
+            .ExternalClass span,
+            .ExternalClass font,
+            .ExternalClass td,
+            .ExternalClass div {
+                line-height: 100%;
+            }
+
+        body {
+            margin: 0;
+            padding: 0;
+            -webkit-text-size-adjust: 100%;
+            -ms-text-size-adjust: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+        }
+
+        table {
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+            border-collapse: collapse;
+        }
+
+        td {
+            border-collapse: collapse;
+        }
+
+            td.footercontent {
+                font-size: 12px !important;
+            }
+
+            td.areatextcontent {
+                font-size: 14px !important;
+            }
+
+
+        #outlook a {
+            padding: 0;
+        }
+
+        p {
+            margin: 0px;
+        }
+
+        img {
+            display: block;
+            border: 0 none;
+            height: auto;
+            line-height: 100%;
+            outline: none;
+            text-decoration: none;
+            -ms-interpolation-mode: bicubic;
+        }
+
+        a img {
+            border: 0 none;
+        }
+
+        h2 {
+            color: #0066CC !important;
+        }
+
+        .appraisal {
+            margin: 0px;
+        }
+
+        .appraisalHead {
+            padding-left: 8px;
+            padding-right: 8px;
+            font-weight: bold;
+            border: 1px solid #dddddd;
+            background-color: #ececec;
+        }
+
+        .appraisalData {
+            padding-top: 5px;
+            padding-left: 8px;
+            padding-bottom: 5px;
+            font-weight: normal;
+        }
+
+        ul.NoDot {
+            list-style-type: none;
+        }
+
+       =20
+    </style>
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" height=3D"100%" wid=
+th=3D"100%" id=3D"sirBodyTable">
+<tbody>
+<tr>
+<td align=3D"center" valign=3D"top">
+<table align=3D"center" border=3D"0" cellpadding=3D"0" cellspacing=3D"0" wi=
+dth=3D"90%" id=3D"sirEmailContainer" class=3D"contenttable">
+<tbody>
+<tr>
+<td align=3D"center" valign=3D"top">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" id=
+=3D"sirEmailHeader">
+<tbody>
+<tr>
+<td align=3D"center" valign=3D"top">
+<table cellpadding=3D"10" cellspacing=3D"0" width=3D"100%" style=3D"border-=
+collapse: collapse; margin-left: auto; margin-right: auto; text-align: left=
+; border: 1px solid #edecec;">
+<tbody>
+<tr>
+<td class=3D"logohead" align=3D"left" valign=3D"middle">
+<table width=3D"164" border=3D"0" cellspacing=3D"0">
+<tbody>
+<tr>
+<td><img src=3D"http://www.sas.com/images/partners/2015/SAS_logo.png" width=
+=3D"164" height=3D"47" alt=3D"sas logo" style=3D"display: block;-ms-interpo=
+lation-mode: bicubic;"></td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td align=3D"center" valign=3D"top">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" id=
+=3D"sirEmailBody">
+<tbody>
+<tr>
+<td align=3D"center" valign=3D"top">
+<table cellpadding=3D"10" cellspacing=3D"10" width=3D"100%" style=3D"border=
+-collapse: collapse; margin-left: auto; margin-right: auto; text-align: lef=
+t; border: 1px solid #edecec;">
+<tbody>
+<tr>
+<td style=3D"text-align: left;" align=3D"left">
+<table style=3D"width: 100%;">
+<tbody>
+<tr>
+<td style=3D"margin-bottom: 10px; padding-top: 15px; padding-bottom: 30px; =
+border-bottom-width: 2px; border-bottom-color: #edecec; border-bottom-style=
+: solid;">
+<div style=3D"text-align: left; text-indent: 0pt; margin: 0px;" align=3D"le=
+ft"><style type=3D"text/css">=0A=
+		.cs95E872D0{text-align:left;text-indent:0pt;margin:0pt 0pt 0pt 0pt}=0A=
+		.cs53F207AF{color:#000000;background-color:transparent;font-family:Micros=
+oft Sans Serif;font-size:10pt;font-weight:normal;font-style:normal;}=0A=
+		.csA2BF052F{color:#000000;background-color:transparent;font-family:Micros=
+oft Sans Serif;font-size:10pt;font-weight:normal;font-style:normal;text-dec=
+oration: none;}=0A=
+		.csE3DD5F11{color:#0000FF;background-color:transparent;font-family:Micros=
+oft Sans Serif;font-size:10pt;font-weight:normal;font-style:normal;text-dec=
+oration: underline;}=0A=
+	</style>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">Hello Joseph,</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">&nbsp;</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">Part of the problem is h=
+ere:</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">&nbsp;</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">%do =3D1 %to %sysfunc(co=
+untw(%quote(&amp;logic8), %str( ) ));</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">&nbsp;</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">You are missing the inde=
+x variable for the %DO loop.</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">&nbsp;</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">It should be:</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">&nbsp;</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">%do j=3D1 %to %sysfunc(c=
+ountw(%quote(&amp;logic8), %str( ) ));</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">&nbsp;</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">Thank You,</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">Russ Tyndall</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">SAS Technical Support An=
+alyst</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">SAS Certified Advanced P=
+rogrammer for SAS 9</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">&nbsp;</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF"><a class=3D"csA2BF052F" =
+href=3D"http://www.sas.com"><span class=3D"csE3DD5F11">http://www.sas.com</=
+span></a></span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">&nbsp;</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">SAS=C2=AE =E2=80=A6 THE =
+POWER TO KNOW=C2=AE</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">&nbsp;</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">To find all the informat=
+ion you need on the Macro Language visit the following website:</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">&nbsp;</span></p>
+<p class=3D"cs95E872D0"><span class=3D"csE3DD5F11"><a class=3D"csE3DD5F11" =
+href=3D"http://support.sas.com/rnd/base/macro/index.html"><span>http://supp=
+ort.sas.com/rnd/base/macro/index.html</span></a></span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">&nbsp;</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">&nbsp;</span></p>
+<p class=3D"cs95E872D0"><span class=3D"cs53F207AF">&nbsp;</span></p>
+</div>
+</td>
+</tr>
+<tr>
+<td style=3D"padding-left: 50px;">
+<table style=3D"width: 100%;">
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+<tr>
+<td align=3D"center" valign=3D"top">
+<table border=3D"0" cellpadding=3D"0" cellspacing=3D"0" width=3D"100%" id=
+=3D"sirEmailFooter">
+<tbody>
+<tr>
+<td align=3D"center" valign=3D"top">
+<table cellpadding=3D"10" cellspacing=3D"10" bgcolor=3D"#edecec" width=3D"1=
+00%" style=3D"border-collapse: collapse; margin-left: auto; margin-right: a=
+uto; text-align: left; border: 1px solid #edecec;">
+<tbody>
+<tr style=3D"background-color: #edecec;" bgcolor=3D"#edecec">
+<td style=3D"text-align: left; font-size: 12px;" background-color=3D"#edece=
+c" align=3D"left" bgcolor=3D"#edecec" class=3D"footercontent">
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</td>
+</tr>
+</tbody>
+</table>
+</body>
+</html>

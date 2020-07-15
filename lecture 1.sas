@@ -1,0 +1,6 @@
+proc print data=sashelp.cars;
+run;
+/*CHECK THE LOG TO MAKE SURE THE PROGRAM RAN WITHOUT ERRORS */
+
+/*WE'LL MODIFY THIS REPORT TO VIEW ONLY A SUBSET*/
+proc print data=
