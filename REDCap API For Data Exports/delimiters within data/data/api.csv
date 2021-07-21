@@ -1,0 +1,2 @@
+record_id,notes,free_text,number,date,radio,checkbox___1,checkbox___2,field_types_complete
+1,"this data contains delimiters, and a newline command.  Compare how this is handled between a manual export and an API export.","free text, with delimiter",33,2021-03-17,1,1,1,2

@@ -1,0 +1,53 @@
+1                                           The SAS System             11:28 Wednesday, March 17, 2021
+
+NOTE: Copyright (c) 2016 by SAS Institute Inc., Cary, NC, USA. 
+NOTE: SAS (r) Proprietary Software 9.4 (TS1M5) 
+      Licensed to UNIVERSITY OF PENNSYLVANIA - SFA T&R, Site 70080524.
+NOTE: This session is executing on the X64_10PRO  platform.
+
+
+
+NOTE: Updated analytical products:
+      
+      SAS/STAT 14.3
+      SAS/ETS 14.3
+      SAS/OR 14.3
+      SAS/IML 14.3
+      SAS/QC 14.3
+
+NOTE: Additional host information:
+
+ X64_10PRO WIN 10.0.19041  Workstation
+
+NOTE: SAS initialization used:
+      real time           0.54 seconds
+      cpu time            0.45 seconds
+      
+1          /* SAS functionality for scheduling. */
+2          /*Analysts have several options for scheduling their work to be run on a regular basis, */
+3          /*whether it’s daily, weekly, monthly or otherwise.*/
+4          /*"Q:\SAMPLE_SAS_PROGRAM\JOE-SAMPLE-SAS-CODE\documents\Four ways to schedule SAS tasks -
+4        ! SAS Users Groups.pdf"*/
+5          
+6          
+7          /*Create RTF for each proc seperately*/
+8          ods rtf file="Q:\SAMPLE_SAS_PROGRAM\JOE-SAMPLE-SAS-CODE\Schedule a SAS program\proc
+8        ! contents sashelp_cars &sysdate..doc" style=journal;
+NOTE: Writing RTF Body file: Q:\SAMPLE_SAS_PROGRAM\JOE-SAMPLE-SAS-CODE\Schedule a SAS program\proc 
+      contents sashelp_cars 17MAR21.doc
+9          proc contents data=sashelp.cars;
+10         title "sashelp.cars";
+11         run;
+
+NOTE: PROCEDURE CONTENTS used (Total process time):
+      real time           0.06 seconds
+      cpu time            0.04 seconds
+      
+NOTE: The PROCEDURE CONTENTS printed pages 1-2.
+
+12         ods rtf close;
+NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
+NOTE: The SAS System used:
+      real time           0.83 seconds
+      cpu time            0.63 seconds
+      

@@ -1,0 +1,1 @@
+"dir/sas.exe" -SYSIN "dir/file.sas" -LOG "dir/file.log" -PRINT "dir/file.lst"

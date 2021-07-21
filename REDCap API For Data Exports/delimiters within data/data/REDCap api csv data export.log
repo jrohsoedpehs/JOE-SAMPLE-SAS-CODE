@@ -1,0 +1,85 @@
+1                                           The SAS System                10:19 Monday, March 22, 2021
+
+NOTE: Copyright (c) 2016 by SAS Institute Inc., Cary, NC, USA. 
+NOTE: SAS (r) Proprietary Software 9.4 (TS1M5) 
+      Licensed to UNIVERSITY OF PENNSYLVANIA - SFA T&R, Site 70080524.
+NOTE: This session is executing on the X64_10PRO  platform.
+
+
+
+NOTE: Updated analytical products:
+      
+      SAS/STAT 14.3
+      SAS/ETS 14.3
+      SAS/OR 14.3
+      SAS/IML 14.3
+      SAS/QC 14.3
+
+NOTE: Additional host information:
+
+ X64_10PRO WIN 10.0.19041  Workstation
+
+NOTE: SAS initialization used:
+      real time           0.74 seconds
+      cpu time            0.56 seconds
+      
+1           OPTIONS dlcreatedir;
+2           LIBNAME data "Q:\SAMPLE_SAS_PROGRAM\JOE-SAMPLE-SAS-CODE\REDCap API\delimiters within data"
+2        ! ;
+NOTE: Libref DATA was successfully assigned as follows: 
+      Engine:        V9 
+      Physical Name: Q:\SAMPLE_SAS_PROGRAM\JOE-SAMPLE-SAS-CODE\REDCap API\delimiters within data
+3          
+4          
+5          filename my_in "Q:\SAMPLE_SAS_PROGRAM\JOE-SAMPLE-SAS-CODE\REDCap API\delimiters within
+5        ! data\api_parameter.txt";
+6          filename my_out "Q:\SAMPLE_SAS_PROGRAM\JOE-SAMPLE-SAS-CODE\REDCap API\delimiters within
+6        ! data\api.csv";
+7          filename status "Q:\SAMPLE_SAS_PROGRAM\JOE-SAMPLE-SAS-CODE\REDCap API\delimiters within
+7        ! data\api_http_status.txt";
+8          
+9          %let mytoken = 552C4CC4ECC8F0EB997F0BEA90E14807;
+10         
+11         data _null_ ;
+12         file my_in ;
+13         put "%NRStr(token=)&mytoken%NRStr(&content=record&type=flat&rawOrLabel=raw&format=csv)&";
+14         run;
+
+NOTE: The file MY_IN is:
+      
+      Filename=Q:\SAMPLE_SAS_PROGRAM\JOE-SAMPLE-SAS-CODE\REDCap API\delimiters within 
+      data\api_parameter.txt,
+      RECFM=V,LRECL=32767,File Size (bytes)=0,
+      Last Modified=22Mar2021:10:19:46,
+      Create Time=22Mar2021:10:19:46
+
+NOTE: 1 record was written to the file MY_IN.
+2                                           The SAS System                10:19 Monday, March 22, 2021
+
+      The minimum record length was 90.
+      The maximum record length was 90.
+NOTE: DATA statement used (Total process time):
+      real time           0.08 seconds
+      cpu time            0.03 seconds
+      
+
+15         
+16         proc http
+17         in= my_in
+18         out= my_out
+19         headerout = status
+20         url ="https://redcap.nursing.upenn.edu/api/"
+21         method="post";
+22         run;
+
+NOTE: PROCEDURE HTTP used (Total process time):
+      real time           0.41 seconds
+      cpu time            0.06 seconds
+      
+NOTE: 200 OK
+
+NOTE: SAS Institute Inc., SAS Campus Drive, Cary, NC USA 27513-2414
+NOTE: The SAS System used:
+      real time           1.31 seconds
+      cpu time            0.70 seconds
+      

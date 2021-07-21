@@ -1,0 +1,20 @@
+curdir = Q:\Nalaka Gooneratne\Memories2\DCC\Create\M2_DCC_CR_SAS-Programs
+path   = Q:\Nalaka Gooneratne\Memories2\DCC\ (use scan on \)
+
+scan(&curdir, 1, "\")= Q: \ Nalaka Gooneratne \ Memories2 \ DCC \ Create \ M2_DCC_CR_SAS-Programs
+ 
+
+directory = ""
+
+i=-3
+directory = cats(next_name, '\',directory);
+directory = DCC\"";
+directory = DCC\
+
+i=-4
+directory = cats(next_name, '\',directory);
+directory = Memories2\DCC\
+
+I=-5
+directory = cats(next_name, '\',directory);
+directory = Nalaka Gooneratne\Memories2\DCC\

@@ -1,0 +1,1 @@
+"C:\Program Files\SASHome\SASFoundation\9.4\sas.exe" -SYSIN "Q:\SAMPLE_SAS_PROGRAM\JOE-SAMPLE-SAS-CODE\Schedule a SAS program\Schedule SAS tasks.sas" -LOG "Q:\SAMPLE_SAS_PROGRAM\JOE-SAMPLE-SAS-CODE\Schedule a SAS program\Schedule SAS tasks.log" -PRINT "Q:\SAMPLE_SAS_PROGRAM\JOE-SAMPLE-SAS-CODE\Schedule a SAS program\Schedule SAS tasks.lst"

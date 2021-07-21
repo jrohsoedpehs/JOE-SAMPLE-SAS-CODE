@@ -1,0 +1,15 @@
+1 statement per row
+indent (4 spaces for a proc or data step)
+
+add a title to any output (proc means, print, freq)
+
+Use white space to separate multiple procs or data steps
+
+Use comment for every proc or data step
+
+proc/data ...;
+    by;
+    where;
+    code;
+    title;
+run;

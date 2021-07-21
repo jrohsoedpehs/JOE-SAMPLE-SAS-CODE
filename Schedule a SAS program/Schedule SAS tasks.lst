@@ -1,0 +1,61 @@
+                                             sashelp.cars          11:28 Wednesday, March 17, 2021   1
+
+                                        The CONTENTS Procedure
+
+               Data Set Name        SASHELP.CARS              Observations          428
+               Member Type          DATA                      Variables             15 
+               Engine               V9                        Indexes               0  
+               Created              09/06/2017 23:02:29       Observation Length    152
+               Last Modified        09/06/2017 23:02:29       Deleted Observations  0  
+               Protection                                     Compressed            NO 
+               Data Set Type                                  Sorted                YES
+               Label                2004 Car Data                                      
+               Data Representation  WINDOWS_64                                         
+               Encoding             us-ascii  ASCII (ANSI)                             
+
+
+                                  Engine/Host Dependent Information
+
+  Data Set Page Size          65536                                                                
+  Number of Data Set Pages    2                                                                    
+  First Data Page             1                                                                    
+  Max Obs per Page            430                                                                  
+  Obs in First Data Page      413                                                                  
+  Number of Data Set Repairs  0                                                                    
+  ExtendObsCounter            YES                                                                  
+  Filename                    C:\Program Files\SASHome\SASFoundation\9.4\core\sashelp\cars.sas7bdat
+  Release Created             9.0401M5                                                             
+  Host Created                X64_SR12R2                                                           
+  Owner Name                  BUILTIN\Administrators                                               
+  File Size                   192KB                                                                
+  File Size (bytes)           196608                                                               
+
+
+                             Alphabetic List of Variables and Attributes
+ 
+                    #    Variable       Type    Len    Format      Label
+
+                    9    Cylinders      Num       8                               
+                    5    DriveTrain     Char      5                               
+                    8    EngineSize     Num       8                Engine Size (L)
+                   10    Horsepower     Num       8                               
+                    7    Invoice        Num       8    DOLLAR8.                   
+                   15    Length         Num       8                Length (IN)    
+                   11    MPG_City       Num       8                MPG (City)     
+                   12    MPG_Highway    Num       8                MPG (Highway)  
+                    6    MSRP           Num       8    DOLLAR8.                   
+                    1    Make           Char     13                               
+                    2    Model          Char     40                               
+                    4    Origin         Char      6                               
+                    3    Type           Char      8                               
+                   13    Weight         Num       8                Weight (LBS)   
+                   14    Wheelbase      Num       8                Wheelbase (IN) 
+                                             sashelp.cars          11:28 Wednesday, March 17, 2021   2
+
+                                        The CONTENTS Procedure
+
+                                           Sort Information
+
+                                       Sortedby       Make Type
+                                       Validated      YES      
+                                       Character Set  ANSI     

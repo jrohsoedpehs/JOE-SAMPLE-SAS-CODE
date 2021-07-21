@@ -1,0 +1,21 @@
+libname raw "Q:\George Demiris\PISCES\data\Raw";
+
+In the sas code, look for "Proc format;" and change it to "proc format library=raw.dsn_format; "
+Immediately after Proc format add "options fmtsearch=(raw.dsn_format);"
+
+/*template*/
+data raw.dsn;
+    set redcap;
+run;
+
+raw.pisces
+raw.pisces_formats
+
+raw.referral_tracking
+raw.referral_formats
+
+raw.referral_online_tracking
+raw.referral_online_formats
+
+
+

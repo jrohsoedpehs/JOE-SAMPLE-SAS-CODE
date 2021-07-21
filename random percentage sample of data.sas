@@ -1,31 +1,3 @@
-libname raw "Q:\Nalaka Gooneratne\Memories2\data\Raw";
-libname derived "Q:\Nalaka Gooneratne\Memories2\data\Raw";
-
-footnote "SAS Program Stored In: Q:\Nalaka Gooneratne\Memories2\programs\Draft\Moelter_logical_memory_iia_file.sas";
-
-options fmtsearch=(raw.np_formats);
-options nofmterr;
-
-proc contents data=SampleSRS  varnum;run;
-/*logical_memory_iia_file*/
-proc freq data= raw.np;
-tables logical_memory_iia_file;
-run;
-
-data derived.np;
-set raw.np;
-where logical_memory_iia_file ne "";
-run;
-
-proc print data=derived.np  (obs=10);
-var subject_id redcap_event_name logical_memory_iia_file logical_memory_iia_complete;
-run;
-
-proc contents data=raw.np varnum;run; 
-
-
-
-
 **************************************************************************
 **************************************************************************
 From: Rhodes, Joseph M <josephrh@nursing.upenn.edu> 
@@ -46,22 +18,47 @@ Joseph
 Sent from Mail for Windows 10
 **************************************************************************
 **************************************************************************;
-title2 'Simple Random Sampling';
-proc surveyselect data=raw.np  SEED=1892370417
-   method=srs n=56 out=derived.random56_NP;
+
+/*GET TOTAL # OF OBSERVATIONS*/
+proc contents data=dsn; run;
+/*161 OBS*/
+/*25% OF 161 IS 40.25 ROUNDED DOWN TO 40*/
+
+
+/*USE N=40*/
+/*OUTPUT IDS FOR RANDOM SAMPLE*/
+proc surveyselect data=dsn  SEED=1892370417
+   method=srs n=40 out=rs_ids;
 run;
 *QA check on the random sample;
 
+
+/*RANDOM SAMPLE CREATE FLAG FOR ABOVE IDS*/
 data temp;
-	set derived.random56_NP;
+set rs_ids;
 checkrs = 1;
 run;
 
-data temp2;
-	merge derived.NP temp;
+
+/*MERGE IN RANDOM SAMPLE FLAG*/
+data rs;
+	merge dsn temp;
 	by subject_id;
 run;
 
-proc print data=temp2;
-var subject_id checkrs redcap_event_name logical_memory_iia_file logical_memory_iia_complete;
+/*CHECK IF PERCENTAGE IS CORRECT*/
+proc freq data=rs;
+table checkrs;
 run;
+
+
+/*SHARE OUTPUT WHERE checkrs=1*/
+ods Excel file="dir\filename &sysdate..xlsx" ;
+ods Excel OPTIONS(SHEET_INTERVAL="proc" SHEET_NAME="Tab Name" EMBEDDED_TITLES="yes");
+
+proc print data=rs;
+where checkrs=1;
+title '25% Simple Random Sampling';
+run;
+
+ods Excel close;
