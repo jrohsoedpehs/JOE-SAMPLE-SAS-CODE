@@ -1,18 +1,18 @@
 /*DETAILED AE REPORT FOR DSMB*/
 
 
-libname raw "Q:\Barbara Riegel\Caregiver_RO1_2019\DSMB\DSMB_2021_Spring\data\Raw";
-libname derived "Q:\Barbara Riegel\Caregiver_RO1_2019\DSMB\DSMB_2021_Spring\data\Derived";
+libname raw "path";
+libname derived "path";
 
-footnote "SAS Program stored in: Q:\Barbara Riegel\Caregiver_RO1_2019\DSMB\DSMB_2021_Spring\programs\Draft\Detailed Adverse Events Report with trt.sas";
+footnote "SAS Program stored in: path";
 
 /*FORMATS */
 options fmtsearch=(raw.ae_formats raw.ae_online_formats); 
 options nofmterr;
 
 proc format;
-	value trt 1 = "A" 2 = "B";
-	value count_ 0 = "0" 1 = "1" 2 = "More than 1";
+    value trt 1 = "A" 2 = "B";
+    value count_ 0 = "0" 1 = "1" 2 = "More than 1";
 run;
 
 
@@ -35,7 +35,7 @@ run;
 
 /*LIMIT DATA TO PATIENTS*/
 /*EXPECT 21 AES*/
-/*derived.Adverse_events_trt created in "Q:\Barbara Riegel\Caregiver_RO1_2019\DSMB\DSMB_2021_Spring\programs\Draft\2_AE_reports.sas"*/
+/*derived.Adverse_events_trt created in "path"*/
 /*CREATE FLAG FOR AE*/
 data work.patient_ae;
 set derived.Adverse_events_trt;
@@ -53,7 +53,7 @@ run;
 
 
 /*OUTPUT*/
-ods rtf file =  "Q:\Barbara Riegel\Caregiver_RO1_2019\DSMB\DSMB_2021_Spring\documents\output\Adverse Events Summary by trt &sysdate..doc" style=journal;
+ods rtf file =  "path\Adverse Events Summary by trt &sysdate..doc" style=journal;
 
 
 /*SORT DATA BY dyad_id AND trt TO PREPARE FOR PROC MEANS*/
@@ -90,33 +90,33 @@ title;
 
 /*Categorize number of AEs*/
 data ae_cat;
-	set o;
-	if tot_ae = 0 then tot_ae_cat = 0;
-		else if tot_ae = 1 then tot_ae_cat = 1;
-		else tot_ae_cat = 2;
-	format tot_ae_cat count_. trt trt.;
+    set o;
+    if tot_ae = 0 then tot_ae_cat = 0;
+        else if tot_ae = 1 then tot_ae_cat = 1;
+        else tot_ae_cat = 2;
+    format tot_ae_cat count_. trt trt.;
 run;
 
 /*QA*/
 proc freq data=ae_cat;
-	table tot_ae*tot_ae_cat / missing;
+    table tot_ae*tot_ae_cat / missing;
 run;
 
 /*Percentage of AEs across treatment group (3 categories: 0, 1, >1)*/
 proc freq data=ae_cat;
-	table trt*(tot_ae_cat) / nopercent nocol chisq fisher;
+    table trt*(tot_ae_cat) / nopercent nocol chisq fisher;
 run;
 
 /*Percentage of AEs across treatment groups (2 categories: yes or no)*/
 proc freq data = ae_cat;
-	tables trt*(tot_ae_cat) / nopercent nocol chisq fisher relrisk ;
-/*	format yesno.;*/
+    tables trt*(tot_ae_cat) / nopercent nocol chisq fisher relrisk ;
+/*  format yesno.;*/
 run;
 
 /*proc freq data = ae_cat;*/
-/*	tables trt*(tot_resp_cat) / nopercent nocol chisq fisher relrisk ;*/
-/*	table tot_resp*tot_resp_cat / list missing;*/
-/*	format death kidney liver CV resp GI infection ICU thrombocytopenia delirium neurologic yesno.;*/
+/*  tables trt*(tot_resp_cat) / nopercent nocol chisq fisher relrisk ;*/
+/*  table tot_resp*tot_resp_cat / list missing;*/
+/*  format death kidney liver CV resp GI infection ICU thrombocytopenia delirium neurologic yesno.;*/
 /*run;*/
 
 
@@ -129,16 +129,16 @@ run;
 /*Table 2. Percentage of serious AEs across the two treatmet groups*/
 /*Table 3. Percentage of Expected AE across the two treatment groups*/
 /*proc freq data = work.patient_ae;*/
-/*	tables trt*serious / nopercent nocol chisq;*/
-/*	label organ = "Organ System";*/
+/*  tables trt*serious / nopercent nocol chisq;*/
+/*  label organ = "Organ System";*/
 /*    title "Table 2. Percentage of serious AEs across the two treatmet groups";*/
 /*run;*/
 /*title;*/
 
 
 /*proc freq data = work.patient_ae;*/
-/*	tables trt*expected / nopercent nocol chisq;*/
-/*	label organ = "Organ System";*/
+/*  tables trt*expected / nopercent nocol chisq;*/
+/*  label organ = "Organ System";*/
 /*    title "Table 3. Percentage of Expected AE across the two treatment groups";*/
 /*run;*/
 /*title;*/
