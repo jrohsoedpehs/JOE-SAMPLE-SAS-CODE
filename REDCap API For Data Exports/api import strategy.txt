@@ -1,0 +1,13 @@
+strategy 
+
+create subdirectories/timestamped folders with SAS code
+
+raw excel
+strip newline chars
+
+sas export
+change infile to 2
+
+no _timestamp
+no data access groups
+remove identifiers

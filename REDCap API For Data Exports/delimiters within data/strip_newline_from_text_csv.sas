@@ -13,7 +13,7 @@ data api_clean;
     retain open 0;
 /*  This statement toggles the open flag. */
     if a='"' then open=not open;
-    if a='0D'x and open then put ' ';
+    if a in ('0D'x '13'x '0A'x) and open then put ' ';
 run;
 
 /*'0A'x - line feed (creates a new data obs)*/

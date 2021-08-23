@@ -8,8 +8,11 @@ proc print data=sashelp.cars (obs=30);run;
 data _null_;
 set sashelp.cars;
 call symput(trim(type), enginesize);
+call symput('SAMPLE', enginesize);
+
 run;
-%put SUV;
+%put &SUV;
+%put &SAMPLE;
 
 
 /*SQL SELECT - CREATE MACRO VARIABLE*/
@@ -33,9 +36,9 @@ proc sql noprint;
     into : startswithE   
     separated by '', ''   
     from temp   
-    where name in('M',)/*	char type=2*/
-/*	num  type=1*/
-/*	ANY VARIATION OF BEST IS THE DEFAULT NUM FORMAT*/
+    where name in('M',)/*   char type=2*/
+/*  num  type=1*/
+/*  ANY VARIATION OF BEST IS THE DEFAULT NUM FORMAT*/
 quit; 
 /*VIEW VARIABLES IN &numlist*/
 %put &measures;

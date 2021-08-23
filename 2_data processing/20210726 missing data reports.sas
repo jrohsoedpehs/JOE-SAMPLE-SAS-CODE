@@ -30,26 +30,26 @@ proc print data= raw.adv_events label noobs;
 run;
 
 /*VARS, LOGIC AND TITLES*/
-data macro_variables;
-    length variable$100 logic$300 title$100;
-    infile datalines delimiter='|';
-    input variable$ logic$ title$;
-    datalines;
-excel_sheet | excel_sheet | excel_sheet 
-ae_category | %str( and adverse_events_complete not in (. , 0)) | Adverse Events
-ae_detail | %str( and adverse_events_complete not in (. , 0)) | Adverse Events
-ae_date_site_notified | %str( and adverse_events_complete not in (. , 0)) | Adverse Events
-ae_start_date_time | %str( and adverse_events_complete not in (. , 0)) | Adverse Events
-ae_stop_date_time | %str( and adverse_events_complete not in (. , 0)) | Adverse Events
-ae_severity | %str( and adverse_events_complete not in (. , 0)) | Adverse Events
-ae_relation_to_study | %str( and adverse_events_complete not in (. , 0)) | Adverse Events
-ae_expected | %str( and adverse_events_complete not in (. , 0)) | Adverse Events
-ae_serious | %str( and adverse_events_complete not in (. , 0)) | Adverse Events
-adverse_events_complete | %str( and adverse_events_complete not in (. , 0)) | Adverse Events
-;
+/*data macro_variables;*/
+/*    length variable$100 logic$300 title$100;*/
+/*    infile datalines delimiter='|';*/
+/*    input variable$ logic$ title$;*/
+/*    datalines;*/
+/*excel_sheet | excel_sheet | excel_sheet */
+/*ae_category | %str( and adverse_events_complete not in (. , 0)) | Adverse Events*/
+/*ae_detail | %str( and adverse_events_complete not in (. , 0)) | Adverse Events*/
+/*ae_date_site_notified | %str( and adverse_events_complete not in (. , 0)) | Adverse Events*/
+/*ae_start_date_time | %str( and adverse_events_complete not in (. , 0)) | Adverse Events*/
+/*ae_stop_date_time | %str( and adverse_events_complete not in (. , 0)) | Adverse Events*/
+/*ae_severity | %str( and adverse_events_complete not in (. , 0)) | Adverse Events*/
+/*ae_relation_to_study | %str( and adverse_events_complete not in (. , 0)) | Adverse Events*/
+/*ae_expected | %str( and adverse_events_complete not in (. , 0)) | Adverse Events*/
+/*ae_serious | %str( and adverse_events_complete not in (. , 0)) | Adverse Events*/
+/*adverse_events_complete | %str( and adverse_events_complete not in (. , 0)) | Adverse Events*/
+/*;*/
 /*CHECK THAT THE DATASET HAS 3 FIELDS*/
-proc contents data= macro_variables; run;
-proc print data=macro_variables; run;
+/*proc contents data= macro_variables; run;*/
+/*proc print data=macro_variables; run;*/
 
 
 
@@ -60,39 +60,59 @@ proc print data=macro_variables; run;
 /*IMPORT AE DATA DICTIONARY*/
 /*https://redcap.nursing.upenn.edu/redcap_v11.1.1/Design/data_dictionary_upload.php?pid=1501*/
 PROC IMPORT OUT= raw.ae_dictionary
-            DATAFILE= "C:\Users\josephrh\Downloads\HFDOT3HFAdverseEvents_DataDictionary_2021-07-28.csv"
+            DATAFILE= "C:\Users\josephrh\Downloads\HFDOT3HFAdverseEvents_DataDictionary_2021-07-30.csv"
             DBMS=CSV REPLACE;
 *     GUESSINGROWS = 32767; /*avoids truncation by checking x rows for format vs default 20*/
-     GETNAMES=YES;
-     DATAROW=2; /*read data starting at row 2*/
+     GETNAMES=no
+;
+     DATAROW=1; /*read data starting at row 2*/
 RUN;
 
 proc contents data=raw.ae_dictionary varnum; run;
 proc print data=raw.ae_dictionary; run;
 
 data work.dictionary;
-    set raw.ae_dictionary;
-    where (Field_Type = "text" and Text_Validation_Type_OR_Show_Sl ne "")
-        or Field_Type in("yesno","radio","checkbox","file","dropdown")
+    set raw.ae_dictionary
+    (keep=VAR1 
+          VAR2 
+          VAR4 
+          VAR8
+          VAR12
+    );
+
+    where (VAR4 = "text" and VAR8 ne "")
+        or VAR4 in("yesno","radio","file","dropdown", "Field Type")
 /*        and Field_Type notin("descriptive", "notes")*/
     ;
 /*DELETE THE 1ST ROW OF DATA FROM THE DICTIONARY, WHICH ARE VARIABLE LABELS*/
-    if Form_Name = "Form Name" then delete;
-    branching_logic_clean = TRANWRD(TRANWRD(TRANWRD(TRANWRD(Branching_Logic__Show_field_onl,"]"," "),"["," "),""""," "),"'"," ");
-run;
+/*    if Form_Name = "Form Name" then delete;*/
+/*    branching_logic_clean = TRANWRD(TRANWRD(TRANWRD(TRANWRD(Branching_Logic__Show_field_onl,"]"," "),"["," "),""""," "),"'"," ");*/
 
+    if VAR12 ne "" then 
+    do;
+        branching_logic_clean = TRANWRD(VAR12,"]","");
+        branching_logic_clean = TRANWRD(branching_logic_clean,"[","");
+        branching_logic_clean = TRANWRD(branching_logic_clean,"""","");
+        branching_logic_clean = TRANWRD(branching_logic_clean,"'","");
+        branching_logic_clean = TRANWRD(branching_logic_clean, "<>"," ne . ");
+        branching_logic_clean = TRANWRD(branching_logic_clean, "<>"," ne . ");
+    end;
+
+run;
+proc contents data= work.dictionary;run;
 /*QA FIELD TYPES ARE "text" "yesno","radio","checkbox","file","dropdown"*/
 proc freq data=work.dictionary;
-    tables Field_Type;
+    tables VAR4;
 run;
 
 /*QA FOLLOWING CHARACTERS ARE STRIPPED FROM branching_logic_clean*/
 /*[   ] "" '*/
 proc freq data=work.dictionary;
-    tables branching_logic_clean * Branching_Logic__Show_field_onl / list missing;
+    tables branching_logic_clean * VAR12 / list missing;
 run;
 
 
+proc print data=work.dictionary; run;
 
 
 
@@ -111,7 +131,7 @@ quit;
 %put &name_list;
 /*R-001 R-003 R-004 R-005*/
 
-
+/*proc freq with output on ids*/
 
 /*IDS*/
 data IDS;
@@ -125,12 +145,12 @@ R-004
 R-005
 ;
 proc contents data= IDS; run;
-/*proc print data=IDS; run;*/
+proc print data=IDS; run;
 
 
 /*CARTESIAN PRODUCT BETWEEN IDS AND VARIABLES*/
 /*N*M OBS*/
-/*10 OBS * 3 OBS = 30 OBS TOTAL*/
+/*10 OBS * 4 OBS = 40 OBS TOTAL*/
 
 /*proc sql;*/
 /*   create table CartSQL as*/
@@ -149,14 +169,15 @@ proc contents data= IDS; run;
 
 
 data CartDataStep;
-   set work.macro_variables;
+/*   set work.macro_variables;*/
+   set work.dictionary;
    do i=1 to n;
       set work.IDS point=i nobs=n;
       output;
    end;
 run;
 proc contents data= work.CartDataStep;run;
-/*proc print data=work.CartDataStep;run;*/
+proc print data=work.CartDataStep;run;
 
 /*SORT BY study_id*/
 proc sort data=work.CartDataStep;
@@ -193,13 +214,15 @@ ods Excel file="Q:\Anne Cappola\R61_2019\documents\output\ Adverse Events Missin
 data work.temp;
     set work.CartDataStep;
 /*    macro_call = cats( '%sample(', var1, ',' var2, ')' );*/
-    macro_call = cats('%missing(',study_id,',', variable, ',', '%str(', logic, ')', ',', title,')');
-    if variable = 'excel_sheet' then macro_call = cats( 'ods Excel OPTIONS(SHEET_INTERVAL="now" SHEET_NAME="', study_id,' " EMBEDDED_TITLES="yes");' );
-    if variable = 'excel_sheet' and study_id = 'R-001' then macro_call = cats( 'ods Excel OPTIONS(SHEET_INTERVAL="none" SHEET_NAME="', study_id,' " EMBEDDED_TITLES="yes");' );
+/*    macro_call = cats('%missing(',study_id,',', variable, ',', '%str(', logic, ')', ',', title,')');*/
+    if VAR12 = "" then macro_call = cats('%missing(',study_id,',', VAR1, ',', '%str(', branching_logic_clean, ')', ',', VAR2,')');
+    else macro_call = cats('%missing(',study_id,',', VAR1, ',', '%str( and ', branching_logic_clean, ')', ',', VAR2,')');
+
+    if VAR1 = 'Variable / Field Name' then macro_call = cats( 'ods Excel OPTIONS(SHEET_INTERVAL="now" SHEET_NAME="', study_id,' " EMBEDDED_TITLES="yes");' );
+    if VAR1 = 'Variable / Field Name' and study_id = 'R-001' then macro_call = cats( 'ods Excel OPTIONS(SHEET_INTERVAL="none" SHEET_NAME="', study_id,' " EMBEDDED_TITLES="yes");' );
     call execute(macro_call);
 run;
  
-proc print data=work.temp; run;
 
  
 /*SAS LOG*/
@@ -212,3 +235,8 @@ proc print data=work.temp; run;
 /* */
 
 ods Excel close;
+proc print data=work.temp; run;
+
+
+VAR12 = "" then /*no and*/
+else /*and*/
