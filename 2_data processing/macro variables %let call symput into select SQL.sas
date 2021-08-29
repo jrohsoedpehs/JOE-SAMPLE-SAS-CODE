@@ -15,6 +15,31 @@ run;
 %put &SAMPLE;
 
 
+
+
+
+/*CREATE A LIST OF VARIABLES*/
+
+/*INITIALIZE MACRO VARIABLE fieldslist1*/
+%let fieldslist1=; 
+data _null_;
+set raw.ko_ae_nw_dictionary;
+call symput('fields', field_name);/*ASSIGN MACRO VALUE*/
+call execute('%let fieldslist1=&fieldslist1., &fields;');/*SAVE VALUE TO LIST USING %LET*/
+run;
+%put &fields;
+%put &fieldslist1;
+
+/*GENERATES A LIST VARIABLES FOR */
+proc sql /*noprint*/;
+select distinct field_name
+into :fields separated by "," from raw.ko_ae_nw_dictionary;
+quit;
+/*VIEW THE LIST IN THE LOG*/
+%put &fields;
+
+
+
 /*SQL SELECT - CREATE MACRO VARIABLE*/
 /*BASIC SUMMARY STATS TO CHECK DATA QUALITY*/
 /*CREATE MACRO VARIABLE FOR PROC MEANS AND PROC FREQ*/
